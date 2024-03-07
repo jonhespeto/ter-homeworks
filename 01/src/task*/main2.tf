@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "docker" {
-  host     = "ssh://server"
+  host     = "ssh://178.154.222.203:22"
   ssh_opts = ["-o", "StrictHostKeyChecking=no", "-i", "~/my_key_path", "-o", "UserKnownHostsFile=/dev/null"]
 }
 
@@ -31,17 +31,13 @@ resource "random_password" "pass2" {
 
 resource "docker_image" "mysql" {
   name         = "mysql:8"
+  keep_locally = true
 }
 
 resource "docker_container" "mysql" {
-  image = docker_image.mysql.image_id
+  image = "mysql:8"
   name  = "mysql"
-  env = [ "MYSQL_pass1WORD=${random_password.pass1.result}", 
-          "MYSQL_DATABASE=wordpress", 
-          "MYSQL_USER=wordpress", 
-          "MYSQL_PASSWORD=${random_password.pass2.result}", 
-          "MYSQL_ROOT_HOST=%"
-          ]
+  env = ["MYSQL_ROOT_PASSWORD=${random_password.pass1.result}", "MYSQL_PASSWORD=${random_password.pass2.result}", "MYSQL_DATABASE=wordpress", "MYSQL_USER=wordpress"]
 
   ports {
     internal = 3306
