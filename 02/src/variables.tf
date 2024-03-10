@@ -31,11 +31,17 @@ variable "vpc_name" {
   description = "VPC network & subnet name"
 }
 
-
-###ssh vars
-
-variable "vms_ssh_root_key" {
+variable "instance" {
   type        = string
-  default     = "<your_ssh_ed25519_key>"
-  description = "ssh-keygen -t ed25519"
+  default = "netology-develop-platform"
+}
+
+variable "name_web" {
+  type        = string
+  default = "web"
+}
+
+variable "name_db" {
+  type        = string
+  default = "db"
 }
